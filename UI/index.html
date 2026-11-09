@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LS-010 Capstone</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>LS-010 Capstone</h1>
+    <button class="settings">Settings</button>
+  </header>
+  <div id="FootageContainer">
+    <img src="Soccer.jpg" alt="Temp-img" id="Footage">
+    <div class="vid-label">FPS: 30</div>
+    <div class="box"></div>
+
+    <div id="RecordingControls" aria-label="Recording controls">
+      <button class="rec-btn record" title="Record">o</button>
+      <button class="rec-btn stop" title="Stop">[]</button>
+    </div>
+
+    <input type="checkbox" id="AnalyticsToggle">
+    <div id="AnalyticsPanel">
+      <label for="AnalyticsToggle" id="AnalyticsTab">&lt;</label>
+      <div class="analytic"><span>Ball speed</span><span>10 m/s</span></div>
+      <div class="analytic"><span>Ball elevation</span><span>0 m</span></div>
+      <div class="analytic"><span>Current zone</span><span>Attack</span></div>
+      <div class="analytic"><span>Time in zone</span><span>10 min</span></div>
+      <div class="analytic"><span>Confidence</span><span>80%</span></div>
+    </div>
+  </div>
+</body>
