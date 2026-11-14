@@ -10,6 +10,10 @@ Tested on: Intel Mac, macOS 12 (Monterey), AppleClang 14.
 Everything lives inside this folder. Dependencies are cloned and built into `third_party/`, so
 nothing is installed system-wide except CMake.
 
+## Google Colab
+
+Google Colab Notebook [link](https://colab.research.google.com/drive/1T4Hvo507a_Lmm8bftySXI0Nvs-OpfSHe).
+
 ## Layout
 
 ```
