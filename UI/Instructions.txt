@@ -1,0 +1,8 @@
+Test server (page + laptop webcam, no Pi needed). The real system is ballcore: see core/README.md.
+
+Settings->Network&Internet->MobileHotspot->enable
+
+>pip install flask opencv-python
+>python test_server.py
+
+On phone goto http://ip:8000
