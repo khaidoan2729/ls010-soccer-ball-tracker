@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LS-010 Capstone</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
   <header>
@@ -12,7 +12,7 @@
     <button class="settings">Settings</button>
   </header>
   <div id="FootageContainer">
-    <img src="Soccer.jpg" alt="Temp-img" id="Footage">
+    <img src="/video_feed" alt="Live footage" id="Footage">
     <div class="vid-label">FPS: 30</div>
     <div class="box"></div>
 

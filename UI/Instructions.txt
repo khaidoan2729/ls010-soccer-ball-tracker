@@ -1,0 +1,5 @@
+Settings->Network&Internet->MobileHotspot->enable
+
+>python server.py
+
+On phone goto http://ip:8000
