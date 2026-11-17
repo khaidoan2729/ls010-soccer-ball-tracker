@@ -5,11 +5,13 @@
 //                                              \-> IAnalytics -> PipelineState -> IRecorder
 //   server threads:   /stream (Latest<Frame>), /api/state (Latest<PipelineState>), /api/pan, /api/record
 //
-// Usage: ballcore [camera_device=/dev/video0] [port=8080]
+// Usage: ballcore [camera_device=/dev/video0] [port=8080] [model.onnx]
+//        (no model -> StubDetector)
 
 #include <atomic>
 #include <csignal>
 #include <iostream>
+#include <memory>
 #include <mutex>
 #include <optional>
 #include <thread>
@@ -18,6 +20,7 @@
 #include "capture/camera.h"
 #include "control/pan.h"
 #include "detect/detector.h"
+#include "detect/onnx_detector.h"
 #include "latest.h"
 #include "record/recorder.h"
 #include "server/http_server.h"
@@ -43,13 +46,26 @@ int main(int argc, char** argv) {
     now_s();  // t = 0
     const std::string device = argc > 1 ? argv[1] : "/dev/video0";
     const int port = argc > 2 ? std::stoi(argv[2]) : 8080;
+    const std::string model = argc > 3 ? argv[3] : "";
     std::signal(SIGINT, [](int) { g_run = false; });
     std::signal(SIGTERM, [](int) { g_run = false; });
     std::signal(SIGPIPE, SIG_IGN);
 
     // ---- stages (swap stubs for real implementations here) ----
     OpenCvCamera camera(device, 1280, 720, 30);
-    StubDetector detector;
+    std::unique_ptr<IDetector> detector;
+    if (model.empty()) {
+        detector = std::make_unique<StubDetector>();
+        std::cerr << "detector: stub (pass a model.onnx path as 3rd argument for real detection)\n";
+    } else {
+        try {
+            detector = std::make_unique<OnnxDetector>(model);
+        } catch (const std::exception& e) {
+            std::cerr << "detector: cannot load " << model << ": " << e.what() << "\n";
+            return 1;
+        }
+        std::cerr << "detector: onnx " << model << "\n";
+    }
     StubTracker tracker;
     StubPanController pan;
     NullServo servo;
@@ -116,7 +132,7 @@ int main(int argc, char** argv) {
             s.t = f.t;
             s.frame_width = f.image.cols;
             s.frame_height = f.image.rows;
-            s.track = tracker.update(f.t, detector.detect(f));
+            s.track = tracker.update(f.t, detector->detect(f));
             {
                 std::lock_guard<std::mutex> lk(pan_m);
                 s.pan_manual = manual_pan.has_value();
