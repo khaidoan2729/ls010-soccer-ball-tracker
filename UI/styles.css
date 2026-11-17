@@ -129,3 +129,19 @@ header h1 {
 .rec-btn.record {
     color: red;
 }
+
+/* Status label when the camera is down, FPS is too low, or the server is unreachable */
+.vid-label.error {
+    color: white;
+    background: rgba(200, 0, 0, 0.85);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Ball box / trail overlay, drawn from /api/state by app.js */
+#Overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}

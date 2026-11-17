@@ -1,8 +1,11 @@
-
-from flask import Flask, Response, render_template
+# Lightweight TEST server for working on the web page without the Pi / ballcore.
+# Serves this folder (index.html, app.js, styles.css) and streams the local webcam at /stream.
+# It does not provide /api/state, so the status label shows "Server offline" and there is no
+# overlay. The real server is ballcore (core/), which serves these same files.
+from flask import Flask, Response
 import cv2
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='')
 
 camera = cv2.VideoCapture(0)
 
@@ -21,10 +24,10 @@ def generate_frames():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return app.send_static_file('index.html')
 
-@app.route('/video_feed')
-def video_feed():
+@app.route('/stream')
+def stream():
     return Response(
         generate_frames(),
         mimetype='multipart/x-mixed-replace; boundary=frame'
