@@ -8,13 +8,20 @@ scripts/run.sh [/dev/video0] [8080]
 ```
 Then open `http://soccer-rpi-board.local:8080/`.
 
+Real detection (YOLO ONNX model on the CPU; without a model path the stub detector runs):
+```bash
+./core/build/ballcore /dev/video0 8080 ball-detection/models/ball_detection_2/model.onnx
+```
+The models in `ball-detection/models/` are Ultralytics-trained (AGPL-3.0): testing only, not for
+the delivered product.
+
 ## Contracts
 
 | File | Interface | Stub | Takes → gives |
 |---|---|---|---|
 | `src/types.h` | — | — | all data types passed between stages |
 | `src/capture/camera.h` | `ICamera` | `OpenCvCamera` (real) | → `cv::Mat` |
-| `src/detect/detector.h` | `IDetector` | `StubDetector` (fake sweeping ball) | `Frame` → `vector<Detection>` |
+| `src/detect/detector.h` | `IDetector` | `StubDetector` (fake sweeping ball); real: `OnnxDetector` (`onnx_detector.h`) | `Frame` → `vector<Detection>` |
 | `src/track/tracker.h` | `ITracker` | `StubTracker` (best detection, 1 s trail) | `vector<Detection>` → `TrackState` |
 | `src/control/pan.h` | `IPanController`, `IServo` | `StubPanController`, `NullServo` | `TrackState` → angle (deg) → servo |
 | `src/analytics/analytics.h` | `IAnalytics` | `StubAnalytics` (constants) | `TrackState` → `Analytics` |

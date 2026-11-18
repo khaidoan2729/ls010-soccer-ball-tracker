@@ -9,7 +9,7 @@ endif()
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 
 find_package(Threads REQUIRED)
-find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs videoio)
+find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs videoio dnn)
 find_package(nlohmann_json REQUIRED)
 # Raspberry Pi OS (Debian 13) ships cpp-httplib as a compiled library with a pkg-config file but
 # no CMake config. Try, in order: CMake config, pkg-config (carries the package's compile flags),
